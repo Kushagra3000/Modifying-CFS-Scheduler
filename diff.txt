@@ -1,0 +1,106 @@
+diff -r linux-5.9.1/arch/x86/entry/syscalls/syscall_64.tbl /home/aman/Downloads/linux-5.9.1/arch/x86/entry/syscalls/syscall_64.tbl
+346d345
+< 335	common	rtnice			sys_rtnice
+Only in linux-5.9.1/arch/x86/include: generated
+Only in linux-5.9.1/certs: signing_key.pem
+Only in linux-5.9.1/certs: signing_key.x509
+Only in linux-5.9.1/certs: x509.genkey
+Only in linux-5.9.1: .config
+Only in linux-5.9.1/include: config
+Only in linux-5.9.1/include: generated
+diff -r linux-5.9.1/include/linux/sched.h /home/aman/Downloads/linux-5.9.1/include/linux/sched.h
+463d462
+< 	u64				rtnice;
+diff -r linux-5.9.1/kernel/sched/core.c /home/aman/Downloads/linux-5.9.1/kernel/sched/core.c
+3073d3072
+< 	p->se.rtnice			= 0;
+diff -r linux-5.9.1/kernel/sched/fair.c /home/aman/Downloads/linux-5.9.1/kernel/sched/fair.c
+537,545c537
+< 
+< 	if(a->rtnice > 0 && b->rtnice > 0)
+< 		return (s64)(a->rtnice - b->rtnice) < 0;
+< 	if(a->rtnice > 0 && b->rtnice <= 0)
+< 		return 1;
+< 	if(b->rtnice > 0 && a->rtnice <= 0)
+< 		return 0;
+< 	else
+< 		return (s64)(a->vruntime - b->vruntime) < 0;
+---
+> 	return (s64)(a->vruntime - b->vruntime) < 0;
+870,881c862,864
+< 	
+< 	
+< 	if(curr->rtnice > 0 && delta_exec > curr->rtnice){
+< 		curr->rtnice = 0;
+< 	}
+< 	else if(curr->rtnice > 0){
+< 		curr->rtnice = curr->rtnice - delta_exec;
+< 	}
+< 	else{
+< 		curr->vruntime += calc_delta_fair(delta_exec, curr);
+< 		update_min_vruntime(cfs_rq);
+< 	}
+---
+> 
+> 	curr->vruntime += calc_delta_fair(delta_exec, curr);
+> 	update_min_vruntime(cfs_rq);
+diff -r linux-5.9.1/kernel/sys.c /home/aman/Downloads/linux-5.9.1/kernel/sys.c
+2697,2730d2696
+< 
+< SYSCALL_DEFINE2(rtnice, long, pid, long, rtnice_time)
+< {
+< 	int flag=0;
+< 	long taskpidd;
+< 	struct task_struct *task;
+< 	printk("Inside syscall\n");
+< 	
+< 	if (pid > 32768 || pid <= 0){
+< 		printk("No such pid exist\n");
+<  		return -ESRCH;
+<  	}
+< 	if(rtnice_time<0){
+< 		printk("Soft run time should be non-negative\n");
+< 		return -EINVAL;
+< 	}
+< 	for_each_process(task)
+< 	{
+< 		taskpidd = (long)task->pid;
+< 		if(pid==taskpidd)
+< 		{
+< 			task->se.rtnice=rtnice_time;
+< 			flag=1;
+< 			printk("rtnice changed for  %s",task->comm);
+< 		}
+< 	}
+< 	if(flag==0)
+< 		printk("Couldn't find such process\n");
+< 	else if(flag==1)
+< 		printk(", rtnice value=%ld\n",rtnice_time);
+< 
+< 	return 0;
+< }
+< 
+Only in linux-5.9.1: Module.symvers
+Only in linux-5.9.1/scripts: asn1_compiler
+Only in linux-5.9.1/scripts/basic: fixdep
+Only in linux-5.9.1/scripts: bin2c
+Only in linux-5.9.1/scripts: extract-cert
+Only in linux-5.9.1/scripts/gdb/linux: constants.py
+Only in linux-5.9.1/scripts: insert-sys-cert
+Only in linux-5.9.1/scripts: kallsyms
+Only in linux-5.9.1/scripts/kconfig: mconf
+Only in linux-5.9.1/scripts/kconfig: mconf-cfg
+Only in linux-5.9.1/scripts/mod: devicetable-offsets.h
+Only in linux-5.9.1/scripts/mod: elfconfig.h
+Only in linux-5.9.1/scripts/mod: mk_elfconfig
+Only in linux-5.9.1/scripts/mod: modpost
+Only in linux-5.9.1/scripts: recordmcount
+Only in linux-5.9.1/scripts/selinux/genheaders: genheaders
+Only in linux-5.9.1/scripts/selinux/mdp: mdp
+Only in linux-5.9.1/scripts: sign-file
+Only in linux-5.9.1/scripts: sorttable
+Only in linux-5.9.1/tools/objtool/arch/x86: lib
+Only in linux-5.9.1/tools/objtool: fixdep
+Only in linux-5.9.1/tools/objtool: objtool
+Only in linux-5.9.1: .version
+Only in linux-5.9.1: vmlinux-gdb.py
